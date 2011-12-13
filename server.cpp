@@ -8,6 +8,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -69,6 +70,66 @@ class Reader {
   }
 
 
+};
+
+class RegisterMessage {
+  string client_ip_;
+
+  RegisterMessage(string client_ip) {
+    client_ip_ = client_ip;
+  }
+};
+
+class TaskMessage {
+  string start_, end_;
+
+  TaskMessage(string start, string end) {
+    start_ = start;
+    end_ = end;
+  }
+};
+
+
+class Message {
+  vector<string> message_parts_;
+
+  public:
+  Message() {
+  }
+
+  static Message fromString(string message) {
+    vector<string> message_parts;
+    message_parts = split(message, ",");
+  };
+
+  // TODO: refactor into utility module
+  static vector<string> split(string str, string separator) {
+    int position = 0;
+    int last_position = 0;
+    vector<string> v;
+
+    while ( position != string::npos ) {
+      last_position = position;
+      position = str.find(separator, position+1);
+      if (last_position == 0)
+        v.push_back(str.substr(last_position, position - last_position));
+      else
+        v.push_back(str.substr(last_position+1, position - last_position - 1));
+    }
+
+    return v;
+  }
+};
+
+class MessageHandler {
+
+  public:
+  MessageHandler() {
+  }
+
+  void handle(string data) {
+    Message message = Message::fromString(data);
+  }
 };
 
 int handler(string data) {
@@ -165,4 +226,11 @@ class Server {
 int main(int argc, char** argv) {
   Server s;
   s.lstn(argv[1]);
+  /*
+  testing message.split
+  vector<string> v = Message::split("hello, world, tesT", ",");
+  for (int i=0; i < v.size(); ++i) 
+    cout << v[i] << endl;
+  */
+
 }

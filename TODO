@@ -1,0 +1,40 @@
+“Rozproszone znajdowanie argumentu funkcji mieszającej MD5 na podstawie jej wartości”
+
+Scenariusz główny
+Aktorzy: Użytkownik serwera
+
+  1. Użytkownik serwera definiuje maksymalną długość badanych ciągów i wartość funkcji mieszającej.
+  2. Serwer nasłuchuje, oczekując na zgłoszenia klientów.
+  3. Klienci rejestrują się.
+  4. Gdy użytkownik stwierdzi, iż liczba klientów jest wystarczająca (min 1), ręcznie rozpoczyna proces przeszukiwania.
+  5. Serwer przesyła do klientów komunikaty zawierające zlecenie przeszukiwania.
+  6. Klient po znalezieniu argumentu funkcji mieszającej wysyła komunikat do serwera z informacją o sukcesie.
+  7. Użytkownik serwera zostaje poinformowany o pomyślnym zakończeniu przeszukiwania. Program kończy swoje działanie.
+
+
+Scenariusz alternatywny - Klient nie odnalazł argumentu w zadanym zakresie poszukiwań
+
+  1-5. Jak w scenariuszu głównym
+  6. Klient po bezowocnym przeszukaniu zleconego zakresu wysyła        
+     komunikat do serwera o braku rezultatów dla tego zakresu.
+  7. Serwer przesyła do klienta zlecenie przeszukiwania następnego    
+     zakresu ciągów. 
+  8. Powrót do kroku 5 scenariusza głównego
+
+Scenariusz alternatywny - Klient próbuje się zarejestrować podczas trwania procesu
+
+  1-4. Jak w scenariuszu głównym
+  5. Klient próbuje się zarejestrować na serwerze
+  6. Klient zostaje poinformowany o braku możliwości rejestracji na serwerze.
+
+Wykorzystywane technologie:
+C++ (do obiektowego modelowania dziedziny problemu)
+BSD sockets (do programowania sieciowego)
+
+
+Kwestie otwarte do przemyślenia:
+zakończenie działania wszystkich klientów w przypadku znalezienia argumentu funkcji mieszającej przez któregokolwiek z nich.
+logowanie zdarzeń na serwerze
+
+
+
