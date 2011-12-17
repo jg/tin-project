@@ -1,11 +1,13 @@
 #ifndef ARGUMENT_H
 #define ARGUMENT_H
+#include <string>
 
-#include <QtDebug>
+using namespace std;
 
 template<typename AlphabetContainerType, typename ElementType, typename StringType, typename HashType>
-class Argument
-{
+class Argument {
+  template<typename AlphabetContainerType_, typename ElementType_, typename StringType_, typename HashType_>
+  friend ostream& operator<<(ostream &out, const Argument<AlphabetContainerType, ElementType, StringType, HashType> &a);
 public:
     typedef AlphabetContainerType AlphabetType;
 
@@ -17,28 +19,21 @@ public:
     typedef int DistanceType;
     typedef int PositionType;
 
-    Argument(AlphabetType al, StringType be, StringType en) : alphabet(al), begin(be), end(en), currentString(be)
-    {
+    Argument(AlphabetType al, StringType be, StringType en) : alphabet(al), begin(be), end(en), currentString(be) { }
 
-    }
-
-    Argument operator+(DistanceType distance)
-    {
+    Argument operator+(DistanceType distance) {
         Argument<AlphabetContainerType, ElementType, StringType, HashType> ret = *this;
 
-        for(DistanceType i = 0; i < distance; ++i)
-        {
+        for(DistanceType i = 0; i < distance; ++i) {
             PositionType currentElement = ret.currentString.size() - 1;
             while(currentElement >= 0 &&
-                  ret.currentString[currentElement] == alphabet[alphabet.size()-1])
-            {
+                  ret.currentString[currentElement] == alphabet[alphabet.size()-1]) {
                 ret.currentString[currentElement] = alphabet[0];
                 --currentElement;
             }
 
-            if(currentElement >= 0)
-            {
-                ret.currentString[currentElement] = alphabet[alphabet.indexOf(ret.currentString[currentElement]) + 1];
+            if(currentElement >= 0) {
+                ret.currentString[currentElement] = alphabet[alphabet.find(ret.currentString[currentElement]) + 1];
             }
             else {
                 StringType newBeggining;
@@ -50,48 +45,48 @@ public:
         return ret;
     }
 
-    Argument operator++()
-    {
+    Argument operator++() {
         *this = *this + 1;
         return *this;
     }
 
-    Argument operator++(DistanceType)
-    {
+    Argument operator++(DistanceType) {
         Argument<AlphabetContainerType, ElementType, StringType, HashType> ret = *this;
         ++*this;
         return ret;
     }
 
-    StringType getString()
-    {
+    StringType getString() {
         return currentString;
     }
 
-    void setBegin(ElementType be)
-    {
+    void setBegin(ElementType be) {
         begin = be;
     }
 
-    StringType getBegin()
-    {
+    StringType getBegin() {
         return begin;
     }
 
-    void setEnd(ElementType en)
-    {
+    void setEnd(ElementType en) {
         end = en;
     }
 
-    StringType getEnd()
-    {
+    StringType getEnd() {
         return end;
     }
 
-    void setAsBegin()
-    {
+    void setAsBegin() {
         currentString = begin;
     }
+
 };
+
+
+template<typename AlphabetContainerType, typename ElementType, typename StringType, typename HashType>
+ostream& operator<<(ostream &out, Argument<AlphabetContainerType, ElementType, StringType, HashType> &a) {
+  out << a.getString();
+  return out;
+}
 
 #endif // ARGUMENT_H

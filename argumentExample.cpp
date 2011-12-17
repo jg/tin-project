@@ -1,16 +1,21 @@
 #include "argument.h"
-#include <QtDebug>
+#include <string>
+#include <iostream>
 
 using namespace std;
 
 int main()
 {
-    QString alphabet = "abc!@#";
+    string alphabet = "abc!@#";
 
-    Argument<QString, QChar, QString, QString> a(alphabet, QString("a"), QString("cc"));
+    Argument<string, char, string, string> a(alphabet, string("a"), string("cc"));
 
-    qDebug() << a++;
-    qDebug() << a;
+    for ( int i = 0; i < 80; ++i ) {
+      cout << a << endl;
+      a = a + 1;
+    }
+    // cout << a++;
+    // cout << a;
 
     return 0;
 }

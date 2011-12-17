@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <string>
 #include <vector>
+#include "argument.h"
 
 using namespace std;
 
